@@ -1,24 +1,18 @@
-import React, { Component,useState } from 'react'
+import React, { Component,useState,useEffect } from 'react'
 import './App.css'
 import ClassCounter from './ClassCounter'
 import HookCounter from './HookCounter'
 import './App.css'
 import Post from './Post'
-
+import {db} from './firebase'
  function App () {
-     const [posts, setPosts] = useState([
-         {
-            username:"Issakaforreal",
-            caption:'Wow it works',
-            imageURL:'../img/react-logo.jpeg'
-         },
-         {
-            username:"Issakaforreal",
-            caption:'Wow it works',
-            imageURL:'https://tinyurl.com/y3fo84xe'
-         }
-     ]);
+     const [posts, setPosts] = useState([]);
 
+    useEffect(() => {
+       db.collection('posts').onSnapshot(snapshot => {
+           setPosts(snapshot.docs.map(doc => doc.data()))
+        })
+     },[])
          
      //https://tinyurl.com/y3fo84xe
         return (
